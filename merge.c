@@ -46,14 +46,37 @@ void merge_sort(int a[],int l, int r,int n){
 
 int main(int argc,char * argv[]){
 	// int * arr = malloc(sizeof(int)*10);
-	int arr[10];
-	for(int i=0;i<10;i++){
+	int n;
+	scanf("%d",&n);
+	double start,end,val=0;
+	int arr[n];
+	for(int i=0;i<n;i++){
 		arr[i] = rand()%1000;
 		printf("%d ",arr[i]);
 		printf("\n");
 	}
-	merge_sort(arr,0,9,10);
-	for(int i=0;i<10;i++){
+
+	double start1,end1,val1;
+	 start1 = omp_get_wtime();
+	for(int i=0;i<n;i++){
+		for(int j=i+1;j<n;j++){
+			if(arr[i] < arr[j]){
+				int temp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = temp;
+			}
+		}
+	}
+	 end1 = omp_get_wtime();
+	 val1 = end1 - start1;
+
+	start = omp_get_wtime();
+	merge_sort(arr,0,n-1,n);
+	end = omp_get_wtime();
+	val = end - start;
+	for(int i=0;i<n;i++){
 		printf("%d ",arr[i]);
 	}
+	printf("\ntime taken is %f\n",val1);
+	printf("time taken is %f",val);
 }
