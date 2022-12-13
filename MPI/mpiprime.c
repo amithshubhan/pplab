@@ -12,10 +12,12 @@ int isprime(int n){
 }
 
 int main(int argc,char * argv[]){
-
-	int *a;
-	int *b;
 	int ele = 12;
+	// ele = argv[0] - '0';
+	scanf("%d",&ele);
+	int *a = (int *)malloc(sizeof(int)*ele);
+	int *b = (int *)malloc(sizeof(int)*ele);
+	
 	int subsize;
 	int size,rank;
 	MPI_Init(&argc,&argv);
@@ -26,8 +28,6 @@ int main(int argc,char * argv[]){
 	int * bp;
 	// printf("rank is %d\n",rank);
 	if(rank == 0){
-		a = (int *)malloc(sizeof(int)*ele);
-		b = (int *)malloc(sizeof(int)*ele);
 		for(int i=0;i<ele;i++)
 		{
 			a[i] = i+1;
@@ -40,7 +40,7 @@ int main(int argc,char * argv[]){
 	ap = (int *)malloc(sizeof(int)*subsize);
 	bp = (int *)malloc(sizeof(int)*subsize);
 
-	
+	MPI_Bcast(&ele,1,MPI_INT,0,MPI_COMM_WORLD);
 	MPI_Scatter(a,subsize,MPI_INT,ap,subsize,MPI_INT,0,MPI_COMM_WORLD);
 
 	for(int i=0;i<subsize;i++){
