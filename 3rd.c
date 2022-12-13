@@ -10,4 +10,4 @@ int t = omp_get_thread_num();
 itern+=1;
 itern%=2;
 printf("thread %d itern %d value: %d\n",t,itern+1,i);
-} }
+} 
