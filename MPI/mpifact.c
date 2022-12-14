@@ -16,7 +16,7 @@ int main(int argc,char * argv[]){
 	int en = ((rank+1)*size);
 	int loc = 1;
 	int * ap = malloc(sizeof(int)*siz);
-	for(int i=st;i<en && i<=n;i++){
+	for(int i=st;i<en && i<n;i++){
 		loc *= i+1;
 	}
 	int glb = 1;
