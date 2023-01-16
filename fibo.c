@@ -1,22 +1,36 @@
 #include <stdio.h>
 #include <omp.h>
-
-long long fib(long long n) 
+int fib(int n)
 {
-        if (n < 2) {
-                return 1;
-        }
-        return fib(n - 2) + fib(n - 1);
+ int i, j;
+ if (n<2)
+   return n;
+ else
+   {
+      #pragma omp task shared(i) firstprivate(n)
+      i=fib(n-1);
+ 
+      #pragma omp task shared(j) firstprivate(n)
+      j=fib(n-2);
+ 
+      #pragma omp taskwait
+      return i+j;
+   }
+}
+ 
+int main()
+{
+ int n = 10;
+ 
+ omp_set_dynamic(0);
+ omp_set_num_threads(4);
+ 
+ #pragma omp parallel shared(n)
+ {
+   #pragma omp single
+   printf ("fib(%d) = %d\n", n, fib(n));
+ }
 }
 
-int main(int argc, char ** argv) 
-{
-        long long n = 0;
-
-        #pragma omp parallel for schedule(dynamic, 3)
-        for (n = 0; n <= 25; n++) {
-                printf("Fib(%lld): %lld\n", n, fib(n));
-        }
-
-        return 0;
-}
+//#pragma omp task shared(i) firstprivate(n)
+//#pragma omp taskwait
